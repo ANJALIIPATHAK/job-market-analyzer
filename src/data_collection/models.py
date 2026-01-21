@@ -41,9 +41,10 @@ class JobPosting:
     
     def __post_init__(self):
         """Generate unique ID after creating the job posting."""
-        # Create a unique ID based on job content
-        content = f"{self.title}{self.company}{self.location}{self.description[:100]}"
-        self.id = hashlib.md5(content.encode()).hexdigest()[:12]
+        import uuid
+        # Create a unique ID using UUID + content hash for guaranteed uniqueness
+        content = f"{self.title}{self.company}{self.location}{uuid.uuid4()}"
+        self.id = hashlib.md5(content.encode()).hexdigest()[:16]
     
     def to_dict(self) -> dict:
         """Convert to dictionary (useful for saving to database)."""
